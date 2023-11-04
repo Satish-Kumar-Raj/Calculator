@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cal</title>
+    <link
+    href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap"
+    rel="stylesheet"
+  />
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Roboto Mono",monospace;
+        }
+        body{
+            height:100vh;
+            background-color: #dadff7;
+        }
+        .cal{
+            width:400px;
+            background-color: #071013;
+            padding: 50px 30px 20px 30px;
+            position: absolute;
+            transform: translate(-50%,-50%);
+            top:50%;
+            left:50%;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0, 5,25,0.4);
+        }
+        .dis{
+            width:100%;
+        }
+        .dis input{
+            width:100%;
+            padding:15px 10px;
+            text-align: right;
+            border: none;
+            background-color: transparent;
+            color:#ffffff;
+            font-size: 35px;
+
+        }
+        .dis input::placeholder{
+            color: #9490ac;
+        }
+
+        .buttons{
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            grid-gap: 20px;
+            margin-top: 40px;
+        }
+
+        button{
+            font-size: 20px;
+            padding: 15px;
+            cursor: pointer;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            border-radius:  10px;
+        }
+        button#zero{
+            grid-column: span 2;
+        }
+        button#equal{
+            grid-row:span 2;
+        }
+        .operation-button{
+            background-color: #f69906;;
+        }
+        .operation-button:hover{
+            background-color: #eef606db;
+        }
+        .digit-button{
+           background-color: #313131;
+        }
+        .digit-button:hover{
+            background-color:#313131a8 ;
+        }
+    </style>
+</head>
+<body>
+    <div class="cal">
+        <div class="dis">
+            <input type="text" placeholder="0" id="input" disabled />
+
+        </div>
+        <div class="buttons">
+            <!-- full remove value -->
+            <button value="AC" id="clear" class="operation-button">AC</button>
+            <!-- remove single value -->
+            <button value="DEL" id="erase" class="operation-button button">DEL</button>
+            <button value="/" class="operation-button button">/</button>
+            <button value="*" class="operation-button button">*</button>
+
+            <button value="7" class="digit-button button">7</button>
+            <button value="8" class="digit-button button">8</button>
+            <button value="9" class="digit-button button">9</button>
+            <button value="-" class="digit-button button">-</button>
+
+            <button value="6" class="digit-button button">6</button>
+            <button value="5" class="digit-button button">5</button>
+            <button value="4" class="digit-button button">4</button>
+            <button value="+" class="operation-button button">+</button>
+
+            <button value="3" class="digit-button button">3</button>
+            <button value="2" class="digit-button button">2</button>
+            <button value="1" class="digit-button button">1</button>
+            
+
+            <button value="=" class="operation-button" id="equal">=</button>
+            <button value="0" class="digit-button button" id="zero">0</button>
+            <button value="." class="digit-button button">.</button>
+          
+
+        </div>
+    </div>
+    <script>
+        let equalPressed=0;
+        let buttonInput=document.querySelectorAll('.button');
+        let input=document.getElementById('input')
+        let equal=document.getElementById('equal')
+        let clear=document.getElementById('clear')
+        let erase=document.getElementById('erase')
+       
+
+        window.onload=()=>{
+            input.value="";
+        };
+
+        buttonInput.forEach((buttonClass)=>{
+            buttonClass.addEventListener('click',()=>{
+                if(equalPressed===1){
+                    equalPressed=0;
+                }
+                input.value+=buttonClass.value;
+            })
+        })
+
+
+        equal.addEventListener('click',()=>{
+            equalPressed=1;
+            let inputValue=input.value;
+            try{
+                let solution=eval(inputValue);
+                if(Number.isNaN(solution)|| !Number.isFinite(solution)){
+                    throw new Error("Invalid mathematical expression");
+                }
+
+                if(Number.isInteger(solution)){
+                    input.value=solution
+                }else{
+                    input.value=solution.toFixed(2)
+                }
+
+            }catch(err){
+                alert(err.message)
+            }
+        })
+
+
+        clear.addEventListener('click',()=>{
+            input.value="";
+        })
+        erase.addEventListener('click',()=>{
+            input.value=input.value.substr(0,input.value.length-1)
+        })
+
+    </script>
+</body>
+</html>
